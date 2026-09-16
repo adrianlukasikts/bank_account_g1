@@ -26,12 +26,12 @@ cursor.execute("DROP TABLE IF EXISTS transactions")
 cursor.execute("""CREATE TABLE IF NOT EXISTS transactions(
                                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                                         amount DECIMAL(10, 2) NOT NULL,
-                                        from_uid INTEGER NOT NULL,
-                                        to_uid INTEGER NOT NULL,
+                                        from_account_id INTEGER NOT NULL,
+                                        to_account_id INTEGER NOT NULL,
                                         date TEXT NOT NULL,
     
-                                        FOREIGN KEY (from_uid) REFERENCES users(id),
-                                        FOREIGN KEY (to_uid) REFERENCES users(id)
+                                        FOREIGN KEY (from_account_id) REFERENCES accounts(id),
+                                        FOREIGN KEY (to_account_id) REFERENCES accounts(id)
                   )""")
 
 cursor.execute("DROP TABLE IF EXISTS credentials")
@@ -45,3 +45,31 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS credentials
                       FOREIGN KEY (user_id) REFERENCES users(id)
 
                   )""")
+
+# Funkcje
+def add_user(name, surname, email, phone_num):
+    cursor.execute("""INSERT INTO users(name, surname, email, phone_num) VALUES (?, ?, ?, ?)""",[name, surname, email, phone_num])
+    con.commit()
+
+# Główny program
+is_finished = False
+
+while not is_finished:
+    print("1. Zaloguj się")
+    print("2. Rejestracja")
+    print("3. Wyjdź")
+
+    selection = input("Wybór: ")
+    match selection:
+        case "1":
+            ...
+            break
+        case "2":
+            name, surname, email, phone_num = input("Imie: "), input("Nazwisko: "), input("E-Mail: "), input("Numer tel.: ")
+            add_user(name, surname, email, phone_num)
+            break
+        case "3":
+            is_finished = True
+            break
+        case default:
+            print("Niepoprawny wybór")
