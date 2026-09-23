@@ -1,4 +1,5 @@
 import sqlite3
+
 con = sqlite3.connect("bank.db")
 
 cursor = con.cursor()
@@ -20,36 +21,46 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS accounts
                       amount  DECIMAL(20, 2) NOT NULL,
                       FOREIGN KEY (user_id) REFERENCES users (id)
                   )
-""")
+               """)
 
 cursor.execute("DROP TABLE IF EXISTS transactions")
-cursor.execute("""CREATE TABLE IF NOT EXISTS transactions(
-                                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                        amount DECIMAL(10, 2) NOT NULL,
-                                        from_account_id INTEGER NOT NULL,
-                                        to_account_id INTEGER NOT NULL,
-                                        date TEXT NOT NULL,
-    
-                                        FOREIGN KEY (from_account_id) REFERENCES accounts(id),
-                                        FOREIGN KEY (to_account_id) REFERENCES accounts(id)
+cursor.execute("""CREATE TABLE IF NOT EXISTS transactions
+                  (
+                      id              INTEGER PRIMARY KEY AUTOINCREMENT,
+                      amount          DECIMAL(10, 2) NOT NULL,
+                      from_account_id INTEGER        NOT NULL,
+                      to_account_id   INTEGER        NOT NULL,
+                      date            TEXT           NOT NULL,
+
+                      FOREIGN KEY (from_account_id) REFERENCES accounts (id),
+                      FOREIGN KEY (to_account_id) REFERENCES accounts (id)
                   )""")
 
 cursor.execute("DROP TABLE IF EXISTS credentials")
 cursor.execute("""CREATE TABLE IF NOT EXISTS credentials
                   (
-                      id INTEGER PRIMARY KEY AUTOINCREMENT,
-                      login VARCHAR(50) UNIQUE NOT NULL,
-                      password TEXT NOT NULL,
-                      user_id INTEGER NOT NULL,
-                      
-                      FOREIGN KEY (user_id) REFERENCES users(id)
+                      id       INTEGER PRIMARY KEY AUTOINCREMENT,
+                      login    VARCHAR(50) UNIQUE NOT NULL,
+                      password TEXT               NOT NULL,
+                      user_id  INTEGER            NOT NULL,
+
+                      FOREIGN KEY (user_id) REFERENCES users (id)
 
                   )""")
 
+
 # Funkcje
 def add_user(name, surname, email, phone_num):
-    cursor.execute("""INSERT INTO users(name, surname, email, phone_num) VALUES (?, ?, ?, ?)""",[name, surname, email, phone_num])
+    cursor.execute("""INSERT INTO users(name, surname, email, phone_num)
+                      VALUES (?, ?, ?, ?)""", [name, surname, email, phone_num])
     con.commit()
+
+
+def add(table_name: str, params: dict[str, object]):
+    cursor.execute(f"INSERT INTO {table_name}({", ".join(params.keys())}) VALUES ({", ".join(['?'] * len(params))})",
+                   list(params.values()))
+    con.commit()
+
 
 # Główny program
 is_finished = False
@@ -65,8 +76,9 @@ while not is_finished:
             ...
             break
         case "2":
-            name, surname, email, phone_num = input("Imie: "), input("Nazwisko: "), input("E-Mail: "), input("Numer tel.: ")
-            add_user(name, surname, email, phone_num)
+            name, surname, email, phone_num = input("Imie: "), input("Nazwisko: "), input("E-Mail: "), input(
+                "Numer tel.: ")
+            add('users', {'name': name, 'surname': surname, 'email': email, "phone_num": phone_num})
             break
         case "3":
             is_finished = True
