@@ -56,11 +56,10 @@ def add_user(name, surname, email, phone_num):
     con.commit()
 
 
-def add(table_name: str, params: dict[str, object]):
+def add(table_name: str, **params):
     cursor.execute(f"INSERT INTO {table_name}({", ".join(params.keys())}) VALUES ({", ".join(['?'] * len(params))})",
                    list(params.values()))
     con.commit()
-
 
 # Główny program
 is_finished = False
@@ -78,7 +77,7 @@ while not is_finished:
         case "2":
             name, surname, email, phone_num = input("Imie: "), input("Nazwisko: "), input("E-Mail: "), input(
                 "Numer tel.: ")
-            add('users', {'name': name, 'surname': surname, 'email': email, "phone_num": phone_num})
+            add(table_name='users', name=name, surname=surname, email=email, phone_num=phone_num)
             break
         case "3":
             is_finished = True
