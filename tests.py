@@ -14,6 +14,7 @@ class AppTest(TestCase):
         self.assertTrue(x == 2)
         self.assertTrue(y == 5)
         self.assertTrue(z == 7)
+    #todo
     def test_add_user(self):
         add(table_name="users",name="janek",surname="perlowski",email="1@gmail.com",phone_num="112")
         user = cursor.execute("SELECT * FROM users WHERE name='janek'").fetchmany()
