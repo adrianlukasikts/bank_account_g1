@@ -9,8 +9,8 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS users
                       id        INTEGER PRIMARY KEY AUTOINCREMENT,
                       name      VARCHAR(20)        NOT NULL,
                       surname   VARCHAR(30)        NOT NULL,
-                      email     VARCHAR(50) UNIQUE NOT NULL,
-                      phone_num VARCHAR(12) UNIQUE NOT NULL
+                      email     VARCHAR(50)        NOT NULL,
+                      phone_num VARCHAR(12)        NOT NULL
                   )""")
 
 cursor.execute("DROP TABLE IF EXISTS accounts")
