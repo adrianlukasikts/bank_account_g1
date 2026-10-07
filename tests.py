@@ -1,9 +1,9 @@
 from unittest import TestCase
-from main import add
+from functions import add
 from sqlite3 import Connection, connect
 
 class AppTest(TestCase):
-    con: Connection = connect()
+    con: Connection = connect("bank.db")
     def test_setup(self):
         x = 2
         y = 3 + x
@@ -14,6 +14,6 @@ class AppTest(TestCase):
         self.assertTrue(z == 7)
     #todo
     def test_add_user(self):
-        add(table_name="users",name="janek",surname="perlowski",email="1@gmail.com",phone_num="112")
+        add(con=self.con,table_name="users",name="janek",surname="perlowski",email="1@gmail.com",phone_num="112")
         user = self.con.cursor().execute("SELECT * FROM users WHERE name='janek'").fetchmany()
         self.assertTrue(len(user)>0)
