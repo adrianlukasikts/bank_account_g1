@@ -1,6 +1,7 @@
 import sqlite3
 
-from functions import add, select
+from functions import add_user
+
 con=sqlite3.connect("bank.db")
 
 # Główny program
@@ -19,9 +20,8 @@ while not is_finished:
         case "2":
             name, surname, email, phone_num, login, password= input("Imie: "), input("Nazwisko: "), input("E-Mail: "), input(
                 "Numer tel.: "), input("login:") , input("password: ")
-            add(con=con,table_name='users', name=name, surname=surname, email=email, phone_num=phone_num)
-            user = select(con=con, table_name="users", email=email).fetchone()
-            add(con=con, table_name="credentials", login=login, password=password, user_id=user[0])
+            add_user(con=con,name=name,surname=surname,email=email,phone_num=phone_num,login=login,password=password)
+
             break
         case "3":
             is_finished = True

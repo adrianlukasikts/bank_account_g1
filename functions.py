@@ -1,3 +1,4 @@
+from multiprocessing import connection
 from sqlite3 import Connection, Cursor
 
 from pygments.lexers import sql
@@ -14,3 +15,10 @@ def select(con: Connection, table_name: str, **params) -> Cursor:
         f'SELECT * FROM {table_name} WHERE {" AND ".join([f"{k} = ?" for k in params])}',
         list(params.values())
     )
+
+def add_user(con:Connection, name:str, surname:str, email:str, phone_num:str,login:str, password:str):
+    add(con=con, table_name='users', name=name, surname=surname, email=email, phone_num=phone_num)
+    user = select(con=con, table_name="users", email=email).fetchone()
+    add(con=con, table_name="credentials", login=login, password=password, user_id=user[0])
+
+    
