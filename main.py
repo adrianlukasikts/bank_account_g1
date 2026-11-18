@@ -1,6 +1,6 @@
 import sqlite3
 
-from functions import add_user
+from functions import add_user, select
 
 con=sqlite3.connect("bank.db")
 
@@ -15,11 +15,30 @@ while not is_finished:
     selection = input("Wybór: ")
     match selection:
         case "1":
-            ...
+            login, password= input("login: "), input("password: ")
+            result = select(con=con, table_name="credentials", selectors=["user_id"], login=login, password=password)
+            if not result:
+                print("Niepoprawne dane logowania")
+            else:
+                id = result[0][0]
+
+                result = select(con=con, table_name="users", selectors=["id", "name", "surname"], id=id)
+
+                if result:
+                    result = result[0]
+                else:
+                    print("User not found")
+
+                print(f"Zalogowano na użytkownika {result[1]} {result[2]}")
+
+                result = select(con=con, table_name="accounts", selectors=["id", "user_id", "amount"], user_id=id)
+
+                print(result)
+
             break
         case "2":
             name, surname, email, phone_num, login, password= input("Imie: "), input("Nazwisko: "), input("E-Mail: "), input(
-                "Numer tel.: "), input("login:") , input("password: ")
+                "Numer tel: "), input("login:") , input("password: ")
             add_user(con=con,name=name,surname=surname,email=email,phone_num=phone_num,login=login,password=password)
             break
         case "3":
