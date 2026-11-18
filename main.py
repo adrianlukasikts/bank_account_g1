@@ -21,7 +21,6 @@ while not is_finished:
             name, surname, email, phone_num, login, password= input("Imie: "), input("Nazwisko: "), input("E-Mail: "), input(
                 "Numer tel.: "), input("login:") , input("password: ")
             add_user(con=con,name=name,surname=surname,email=email,phone_num=phone_num,login=login,password=password)
-
             break
         case "3":
             is_finished = True

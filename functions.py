@@ -18,11 +18,9 @@ class UserAlreadyExists(Exception):
     pass
 def add_user(con:Connection, name:str, surname:str, email:str, phone_num:str,login:str, password:str):
     try:
-        con.cursor().execute("BEGIN TRANSACTION;")
         add(con=con, table_name='users', name=name, surname=surname, email=email, phone_num=phone_num)
         user = select(con=con, table_name="users", email=email).fetchone()
         add(con=con, table_name="credentials", login=login, password=password, user_id=user[0])
-        con.cursor().execute("COMMIT;")
         #todo rzucanie wyjatku UserAlreadyExists
     except UserAlreadyExists:
         print("Użytkownik już istnieje")
