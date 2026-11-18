@@ -1,6 +1,6 @@
 import sqlite3
 
-from functions import add_user, select
+from functions import add_user, select, add
 
 con=sqlite3.connect("bank.db")
 
@@ -32,9 +32,19 @@ while not is_finished:
                 print(f"Zalogowano na użytkownika {result[1]} {result[2]}")
 
                 result = select(con=con, table_name="accounts", selectors=["id", "user_id", "amount"], user_id=id)
-
                 print(result)
 
+
+                #todo zdecydowanie do poprawy
+
+                user_id = id
+                while True:
+                    print("1. Utwórz konto")
+
+                    selection = input("Wybór: ")
+                    match selection:
+                        case "1":
+                            add(con, "accounts", user_id=user_id, amount=0)
             break
         case "2":
             name, surname, email, phone_num, login, password= input("Imie: "), input("Nazwisko: "), input("E-Mail: "), input(
