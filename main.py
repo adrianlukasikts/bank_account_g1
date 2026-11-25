@@ -39,7 +39,11 @@ while not is_finished:
 
                 user_id = id
                 while True:
-                    print("1. Utwórz konto")
+                    print("1. Utwórz konto" )
+                    print("2. Wyświetl stan kont")
+                    print("3. Wpłata na konto")
+                    print("4. Wykonaj przelew")
+
 
                     selection = input("Wybór: ")
                     match selection:
