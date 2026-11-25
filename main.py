@@ -39,16 +39,31 @@ while not is_finished:
 
                 user_id = id
                 while True:
-                    print("1. Utwórz konto" )
-                    print("2. Wyświetl stan kont")
+                    print("1. Utwórz konto bankowe")
+                    print("2. Wyświetl stan kont (wszystkich)")
                     print("3. Wpłata na konto")
                     print("4. Wykonaj przelew")
+
 
 
                     selection = input("Wybór: ")
                     match selection:
                         case "1":
                             add(con, "accounts", user_id=user_id, amount=0)
+                            break
+                        case "2":
+                            accounts_balance = select(con=con, table_name="accounts", selectors=["id","amount"], user_id=user_id)
+                            l = list(map(lambda account_balance: f"Konto o numerze {account_balance[0]}: {account_balance[1]}zł", accounts_balance))
+                            print("\n".join(l))
+                            break
+                        case "3":
+                            account_id=input("Podaj numer konta")
+                            account_amount = input("Podaj kwote")
+
+
+
+
+
             break
         case "2":
             name, surname, email, phone_num, login, password= input("Imie: "), input("Nazwisko: "), input("E-Mail: "), input(
